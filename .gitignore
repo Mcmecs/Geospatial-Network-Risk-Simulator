@@ -1,0 +1,4 @@
+# CMkae build artifacts
+build/
+# VS Code workspace settings
+.vscode/
