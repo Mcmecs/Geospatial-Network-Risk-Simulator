@@ -1,23 +1,66 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+// ==================================================================================
+// Module: Core Geospatial Graph Architecture
+// Purpose: Defines the network infrastructure (Nodes, Edges, and Adjacency List)
+//          used for spatial routing (i.e., best alternate route) and capacity 
+//          shortfall simulations (i.e., how many times out of X iterations).
+// Note: Simple graph (no self-loop or multi-edges)
+// ==================================================================================
+
+
 #include <vector>
 #include <unordered_map>
 #include <stdexcept>
 
+
+/**
+ * @struct Edge
+ * @brief Represents a physical directional link (pipe flow, cable, or road)
+ * 
+ * @note ASSUMPTIONS:
+ * - weight: Represents cost of travel. Kept it fixed, non-dynamic for simplicity. 
+ *           Actual weight should dynamically change based on the flow conditions. Must be >= 0.0.
+ * - capacity: Represents pipe standard volumetric flowrate (or cable capacity) 
+ *             measured in standard E6 cubic meter per day.
+ * 
+ * @todo FUTURE IMPROVEMENTS:
+ * - Add an `is_active` boolean flag to toggle pipe failure during a maintenance shutdown 
+ *   without needing to delete the edge from the adjacency list.
+ */
 struct Edge {
-    int target_node;
-    double weight;
-    double capacity;
+    int target_node; // Directed graph so need a destination
+    double weight; // Distance or cost to travel - need this for Dijkstra's Algo.
+    double capacity; // Maximum flow - need this to figure out shortfalls
 };
 
+/**
+ * @struct Node
+ * @brief Represents a physical network vertex (station, server, or city)
+ * 
+ * @note ASSUMPTIONS:
+ * - Coordinates (x, y) represents a 2D Cartesian plane for distance calculation.
+ * - demand: Postive number means the node consumes flow (e.g., city); negative
+ *           number means the node supplies flow (compressor station). Fixed, static number for 
+ *           simplicity, yet actual would vary depending on site and flwo conditions.
+ */
 struct Node {
-    int id;
-    double x; // X coordinate
-    double y; // Y coordinate
+    int id; // This can be station or server rack
+    double x; // Geographic X coordinate
+    double y; // Geographic Y coordinate
     double demand; // Positive if it needs flow (city), negative if it supplies flow
 };
 
+/**
+ * @class Graph
+ * @brief Directed simple sparse graph architecture for geospacial network modeling.
+ * 
+ * @note TRADEOFF:
+ * - We use std::unordered_map<int, vector<Edge>> to optimize RAM footprint for sparse physical grip where E << V^2.
+ * - Map lookups O(1) average overhead per node access compared to a flat contiguous array, but allow arbitrary,
+ *   non-sequential Node IDs.
+ */
 class Graph {
 private:
     // The adjacency list - maps a Node ID to a list of its outgoing edges
