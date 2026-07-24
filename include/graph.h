@@ -4,8 +4,8 @@
 // ==================================================================================
 // Module: Core Geospatial Graph Architecture
 // Purpose: Defines the network infrastructure (Nodes, Edges, and Adjacency List)
-//          used for spatial routing (i.e., best alternate route) and capacity 
-//          shortfall simulations (i.e., how many times out of X iterations).
+//          used for finding best route (e.g., best flow path) and calculating the system's 
+//          capacity to check for any shortfall (e.g., alternate route can meet 50% of demand).
 // Note: Simple graph (no self-loop or multi-edges)
 // ==================================================================================
 
@@ -20,8 +20,8 @@
  * @brief Represents a physical directional link (pipe flow, cable, or road)
  * 
  * @note ASSUMPTIONS:
- * - weight: Represents cost of travel. Kept it fixed, non-dynamic for simplicity. 
- *           Actual weight should dynamically change based on the flow conditions. Must be >= 0.0.
+ * - weight: Represents cost of travel. Value it fixed for simplicity. Must be >= 0.0.
+ *           In hydaulic simulations the "weight" would dynamically change based on flow conditions. 
  * - capacity: Represents pipe standard volumetric flowrate (or cable capacity) 
  *             measured in standard E6 cubic meter per day.
  * 
@@ -42,8 +42,8 @@ struct Edge {
  * @note ASSUMPTIONS:
  * - Coordinates (x, y) represents a 2D Cartesian plane for distance calculation.
  * - demand: Postive number means the node consumes flow (e.g., city); negative
- *           number means the node supplies flow (compressor station). Fixed, static number for 
- *           simplicity, yet actual would vary depending on site and flwo conditions.
+ *           number means the node supplies flow (compressor station). Fixed number for 
+ *           simplicity, yet actual would vary depending on site and flow conditions.
  */
 struct Node {
     int id; // This can be station or server rack

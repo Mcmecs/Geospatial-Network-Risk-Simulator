@@ -2,8 +2,6 @@
 #include <iostream>
 #include <stdexcept>
 
-
-
 void Graph::addNode(int id, double x, double y, double demand) {
     // Check if node already exists
     if (nodes_.find(id) != nodes_.end()) {

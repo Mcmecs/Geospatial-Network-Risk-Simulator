@@ -29,6 +29,5 @@ TEST_F(GraphTest, VerifyNodeAndEdgeCreation) {
     EXPECT_EQ(edges.size(), 1);
     EXPECT_EQ(edges[0].target_node, 2);
     EXPECT_DOUBLE_EQ(edges[0].capacity, 50.0);
-
 }
 
