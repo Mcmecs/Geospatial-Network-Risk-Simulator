@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 include_directories(include)
 
-add_executable(geo_risk_app src/main.cpp src/graph.cpp src/quadtree.cpp)
+# add_executable(geo_risk_app src/main.cpp src/graph.cpp src/quadtree.cpp)
 
 include(FetchContent)
 FetchContent_Declare(
