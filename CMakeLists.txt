@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 include_directories(include)
 
-add_executable(geo_risk_app src/main.cpp src/graph.cpp)
+add_executable(geo_risk_app src/main.cpp src/graph.cpp src/quadtree.cpp)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -21,13 +21,15 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(graphs_tests tests/test_graph.cpp src/graph.cpp)
-
+add_executable(graphs_tests tests/test_graph.cpp src/graph.cpp) 
 target_link_libraries(graphs_tests GTest::gtest_main)
 
-include(GoogleTest)
-gtest_discover_tests(graphs_tests)
+add_executable(quadtree_tests tests/test_quadtree.cpp src/quadtree.cpp) 
+target_link_libraries(quadtree_tests GTest::gtest_main)
 
+include(GoogleTest) 
+gtest_discover_tests(graphs_tests) 
+gtest_discover_tests(quadtree_tests)
 
 # FetchContent_Declare(
 #     pybind11
